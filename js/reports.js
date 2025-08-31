@@ -6,22 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Função para inicializar a página de relatórios
 function inicializarPaginaRelatorios() {
-    verificarModoEscuro();
     configurarPeriodoPersonalizado();
     aplicarFiltros(); // Carrega os dados iniciais
 }
 
-// Verificar e aplicar o modo escuro se estiver ativado
-function verificarModoEscuro() {
-    // Modo escuro sempre ativado
-    window.modoEscuro = true;
-    console.log('Modo escuro definido como padrão em reports.js');
-    
-    // Aplicar classes para modo escuro
-    document.body.classList.add('modo-escuro');
-    document.documentElement.classList.add('modo-escuro-html');
-    console.log('Classes de modo escuro aplicadas em reports.js');
-}
+
 
 // Configurar event listeners da página
 function configurarEventListeners() {

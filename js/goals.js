@@ -9,19 +9,6 @@ function inicializarPaginaObjetivos() {
     atualizarEstatisticasObjetivos();
     atualizarListaObjetivos();
     atualizarProgressoGeral();
-    verificarModoEscuro();
-}
-
-// Verificar e aplicar o modo escuro se estiver ativado
-function verificarModoEscuro() {
-    // Modo escuro sempre ativado
-    window.modoEscuro = true;
-    console.log('Modo escuro definido como padrão em goals.js');
-    
-    // Aplicar classes para modo escuro
-    document.body.classList.add('modo-escuro');
-    document.documentElement.classList.add('modo-escuro-html');
-    console.log('Classes de modo escuro aplicadas em goals.js');
 }
 
 // Configurar event listeners da página

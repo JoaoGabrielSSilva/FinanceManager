@@ -3,29 +3,11 @@ let dadosFinanceiros = {
     saldoAtual: 0,
     receitas: 0,
     despesas: 0,
-    objetivos: [
-        
-    ],
-    transacoes: [
-        
-    ]
+    objetivos: [],
+    transacoes: []
 };
 
-
 // Variáveis globais
-// Definir modo escuro como padrão
-window.modoEscuro = true;
-
-// Função para inicializar o modo escuro
-function inicializarModoEscuro() {
-    // Definir modo escuro como padrão (sempre ativado)
-    window.modoEscuro = true;
-    console.log('Modo escuro definido como padrão');
-}
-
-// Inicializar o modo escuro imediatamente
-inicializarModoEscuro();
-
 let objetivoAtualIndex = 0;
 let chartMeta;
 let chartMensal;
@@ -65,35 +47,35 @@ function atualizarObjetivo() {
         document.getElementById('meta-titulo').textContent = "Não há meta atualmente";
         document.getElementById('meta-valor-atual').textContent = "--";
         document.getElementById('meta-valor-total').textContent = "--";
-        
+
         // Limpar o gráfico se existir
         if (chartMeta) {
             chartMeta.destroy();
             chartMeta = null;
         }
-        
+
         // Remover texto de porcentagem se existir
         const existingText = document.getElementById('meta-porcentagem');
         if (existingText) {
             existingText.remove();
         }
-        
+
         // Desabilitar botões de navegação
         document.getElementById('prev-meta').disabled = true;
         document.getElementById('next-meta').disabled = true;
-        
+
         return;
     } else {
         // Habilitar botões de navegação
         document.getElementById('prev-meta').disabled = false;
         document.getElementById('next-meta').disabled = false;
     }
-    
+
     const objetivo = dadosFinanceiros.objetivos[objetivoAtualIndex];
     document.getElementById('meta-titulo').textContent = objetivo.titulo;
     document.getElementById('meta-valor-atual').textContent = formatarMoeda(objetivo.valorAtual);
     document.getElementById('meta-valor-total').textContent = formatarMoeda(objetivo.valorTotal);
-    
+
     // Atualizar gráfico de meta
     criarGraficoMeta(objetivo);
 }
@@ -102,24 +84,19 @@ function atualizarObjetivo() {
 function criarGraficoMeta(objetivo) {
     const porcentagem = (objetivo.valorAtual / objetivo.valorTotal) * 100;
     const ctx = document.getElementById('grafico-meta').getContext('2d');
-    
+
     // Destruir gráfico anterior se existir
     if (chartMeta) {
         chartMeta.destroy();
     }
-    
-    // Definir cores baseadas no modo atual (claro/escuro)
-    const progressColor = modoEscuro ? 'rgba(66, 133, 244, 0.8)' : '#007bff';
-    const remainingColor = modoEscuro ? 'rgba(255, 255, 255, 0.1)' : '#e9ecef';
-    const textColor = modoEscuro ? '#adb5bd' : '#666';
-    
+
     chartMeta = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: ['Progresso', 'Restante'],
             datasets: [{
                 data: [objetivo.valorAtual, objetivo.valorTotal - objetivo.valorAtual],
-                backgroundColor: [progressColor, remainingColor],
+                backgroundColor: ['rgba(66, 133, 244, 0.8)', 'rgba(255, 255, 255, 0.1)'],
                 borderWidth: 0
             }]
         },
@@ -129,14 +106,11 @@ function criarGraficoMeta(objetivo) {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false,
-                    labels: {
-                        color: textColor
-                    }
+                    display: false
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return formatarMoeda(context.raw);
                         }
                     }
@@ -144,7 +118,7 @@ function criarGraficoMeta(objetivo) {
             }
         }
     });
-    
+
     // Adicionar texto no centro do donut
     const porcentagemFormatada = porcentagem.toFixed(0) + '%';
     const existingText = document.getElementById('meta-porcentagem');
@@ -170,21 +144,17 @@ function criarGraficoMeta(objetivo) {
 // Criar gráfico mensal (barras)
 function criarGraficoMensal() {
     const ctx = document.getElementById('grafico-mensal').getContext('2d');
-    
+
     // Dados de exemplo para os últimos 6 meses
     const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
     const receitas = [3000, 3200, 3100, 3400, 3300, 3500];
     const despesas = [2500, 2700, 2400, 2800, 2600, 1000];
-    
+
     // Destruir gráfico anterior se existir
     if (chartMensal) {
         chartMensal.destroy();
     }
-    
-    // Definir cores baseadas no modo atual (claro/escuro)
-    const gridColor = modoEscuro ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-    const textColor = modoEscuro ? '#adb5bd' : '#666';
-    
+
     chartMensal = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -193,13 +163,13 @@ function criarGraficoMensal() {
                 {
                     label: 'Receitas',
                     data: receitas,
-                    backgroundColor: modoEscuro ? 'rgba(76, 175, 80, 0.7)' : '#28a745',
+                    backgroundColor: 'rgba(76, 175, 80, 0.7)',
                     borderWidth: 0
                 },
                 {
                     label: 'Despesas',
                     data: despesas,
-                    backgroundColor: modoEscuro ? 'rgba(244, 67, 54, 0.7)' : '#dc3545',
+                    backgroundColor: 'rgba(244, 67, 54, 0.7)',
                     borderWidth: 0
                 }
             ]
@@ -210,35 +180,18 @@ function criarGraficoMensal() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    grid: {
-                        color: gridColor
-                    },
                     ticks: {
-                        color: textColor,
-                        callback: function(value) {
-                            return 'R$ ' + value;
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        color: gridColor
-                    },
-                    ticks: {
-                        color: textColor
+                        callback: value => `R$ ${value}`
                     }
                 }
             },
             plugins: {
                 legend: {
-                    position: 'top',
-                    labels: {
-                        color: textColor
-                    }
+                    position: 'top'
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return context.dataset.label + ': ' + formatarMoeda(context.raw);
                         }
                     }
@@ -252,17 +205,17 @@ function criarGraficoMensal() {
 function atualizarTabelaTransacoes() {
     const tabela = document.getElementById('tabela-transacoes');
     tabela.innerHTML = '';
-    
+
     dadosFinanceiros.transacoes.forEach(transacao => {
         const tr = document.createElement('tr');
         tr.className = `transaction-item ${transacao.tipo === 'receita' ? 'income' : 'expense'}`;
         tr.dataset.id = transacao.id;
-        
+
         // Formatar valor com classe de cor
         const valorFormatado = formatarMoeda(transacao.valor);
         const valorClass = transacao.tipo === 'receita' ? 'value-positive' : 'value-negative';
         const valorPrefix = transacao.tipo === 'receita' ? '+' : '-';
-        
+
         // Criar células da tabela
         tr.innerHTML = `
             <td>${formatarData(transacao.data)}</td>
@@ -276,13 +229,13 @@ function atualizarTabelaTransacoes() {
                 </button>
             </td>
         `;
-        
+
         tabela.appendChild(tr);
     });
-    
+
     // Adicionar event listeners para os botões de exclusão
     document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function (e) {
             e.stopPropagation(); // Evita que o evento se propague para a linha
             const id = parseInt(this.dataset.id);
             excluirTransacao(id);
@@ -292,13 +245,17 @@ function atualizarTabelaTransacoes() {
 
 // Função para excluir uma transação
 function excluirTransacao(id) {
+    if (!confirm('Tem certeza de que deseja excluir esta transação?')) {
+        return;
+    }
+
     // Encontrar o índice da transação no array
     const index = dadosFinanceiros.transacoes.findIndex(t => t.id === id);
-    
+
     if (index !== -1) {
         // Remover a transação do array
         const transacaoRemovida = dadosFinanceiros.transacoes.splice(index, 1)[0];
-        
+
         // Atualizar saldo
         if (transacaoRemovida.tipo === 'receita') {
             dadosFinanceiros.receitas -= transacaoRemovida.valor;
@@ -307,8 +264,8 @@ function excluirTransacao(id) {
             dadosFinanceiros.despesas -= transacaoRemovida.valor;
             dadosFinanceiros.saldoAtual += transacaoRemovida.valor;
         }
-        
-        // Atualizar a interface
+
+        // Atualizar interface
         inicializarDashboard();
     }
 }
@@ -317,63 +274,58 @@ function excluirTransacao(id) {
 function configurarEventListeners() {
     // Navegação entre objetivos
     document.getElementById('prev-meta').addEventListener('click', () => {
-        objetivoAtualIndex = (objetivoAtualIndex - 1 + dadosFinanceiros.objetivos.length) % dadosFinanceiros.objetivos.length;
+        objetivoAtualIndex = Math.max(objetivoAtualIndex - 1, 0);
         atualizarObjetivo();
     });
-    
+
     document.getElementById('next-meta').addEventListener('click', () => {
-        objetivoAtualIndex = (objetivoAtualIndex + 1) % dadosFinanceiros.objetivos.length;
+        objetivoAtualIndex = Math.min(objetivoAtualIndex + 1, dadosFinanceiros.objetivos.length - 1);
         atualizarObjetivo();
     });
-    
+
     // Ordenação da tabela
     document.getElementById('sort-data').addEventListener('click', () => {
         dadosFinanceiros.transacoes.sort((a, b) => new Date(a.data) - new Date(b.data));
         atualizarTabelaTransacoes();
     });
-    
+
     document.getElementById('sort-valor').addEventListener('click', () => {
         dadosFinanceiros.transacoes.sort((a, b) => b.valor - a.valor);
         atualizarTabelaTransacoes();
     });
-    
+
     document.getElementById('sort-categoria').addEventListener('click', () => {
         dadosFinanceiros.transacoes.sort((a, b) => a.categoria.localeCompare(b.categoria));
         atualizarTabelaTransacoes();
     });
-    
+
     // Botão flutuante para cadastros
     document.getElementById('btn-add').addEventListener('click', () => {
         const modal = new bootstrap.Modal(document.getElementById('modal-cadastro'));
         modal.show();
     });
-    
+
     // Alternar entre formulários no modal
     document.getElementById('btn-despesa').addEventListener('change', toggleFormularios);
     document.getElementById('btn-receita').addEventListener('change', toggleFormularios);
     document.getElementById('btn-objetivo').addEventListener('change', toggleFormularios);
-    
+
     // Submissão dos formulários
     document.getElementById('form-transacao').addEventListener('submit', cadastrarTransacao);
     document.getElementById('form-objetivo').addEventListener('submit', cadastrarObjetivo);
-    
+
     // Definir data atual como padrão nos campos de data
     const hoje = new Date().toISOString().split('T')[0];
     document.getElementById('data').value = hoje;
     document.getElementById('objetivo-data').value = hoje;
-    
-    // O botão de modo escuro foi removido, pois o modo escuro agora é padrão
 }
-
-// Função configurarMenuUsuario foi removida pois não é mais necessária
-// Função toggleModoEscuro também foi removida pois o modo escuro agora é padrão
 
 // Alternar entre formulários no modal
 function toggleFormularios() {
     const formTransacao = document.getElementById('form-transacao');
     const formObjetivo = document.getElementById('form-objetivo');
     const modalTitulo = document.getElementById('modal-titulo');
-    
+
     if (document.getElementById('btn-objetivo').checked) {
         formTransacao.classList.add('d-none');
         formObjetivo.classList.remove('d-none');
@@ -388,24 +340,24 @@ function toggleFormularios() {
 // Cadastrar nova transação
 function cadastrarTransacao(event) {
     event.preventDefault();
-    
+
     // Obter valores do formulário
     const descricao = document.getElementById('descricao').value;
     const valor = parseFloat(document.getElementById('valor').value);
     const categoria = document.getElementById('categoria').value;
     const data = document.getElementById('data').value;
     const tipo = document.getElementById('btn-despesa').checked ? 'despesa' : 'receita';
-    
+
     // Validar formulário
     if (!descricao || isNaN(valor) || !categoria || !data) {
         alert('Por favor, preencha todos os campos.');
         return;
     }
-    
+
     // Gerar ID único para a nova transação
-    const novoId = dadosFinanceiros.transacoes.length > 0 ? 
+    const novoId = dadosFinanceiros.transacoes.length > 0 ?
         Math.max(...dadosFinanceiros.transacoes.map(t => t.id)) + 1 : 1;
-    
+
     // Adicionar nova transação
     const novaTransacao = {
         id: novoId,
@@ -415,9 +367,9 @@ function cadastrarTransacao(event) {
         valor,
         tipo
     };
-    
+
     dadosFinanceiros.transacoes.unshift(novaTransacao);
-    
+
     // Atualizar saldo
     if (tipo === 'receita') {
         dadosFinanceiros.receitas += valor;
@@ -426,16 +378,15 @@ function cadastrarTransacao(event) {
         dadosFinanceiros.despesas += valor;
         dadosFinanceiros.saldoAtual -= valor;
     }
-    
+
     // Atualizar interface
     atualizarSaldo();
     atualizarTabelaTransacoes();
-    
+
     // Fechar modal e limpar formulário
-    const modal = bootstrap.Modal.getInstance(document.getElementById('modal-cadastro'));
-    modal.hide();
+    fecharModal('modal-cadastro');
     document.getElementById('form-transacao').reset();
-    
+
     // Definir data atual como padrão
     document.getElementById('data').value = new Date().toISOString().split('T')[0];
 }
@@ -443,62 +394,61 @@ function cadastrarTransacao(event) {
 // Cadastrar novo objetivo
 function cadastrarObjetivo(event) {
     event.preventDefault();
-    
+
     // Obter valores do formulário
     const titulo = document.getElementById('objetivo-titulo').value;
     const valorTotal = parseFloat(document.getElementById('objetivo-valor').value);
     const valorAtual = parseFloat(document.getElementById('objetivo-valor-atual').value);
-    
+
     // Validar formulário
     if (!titulo || isNaN(valorTotal) || isNaN(valorAtual)) {
         alert('Por favor, preencha todos os campos obrigatórios.');
         return;
     }
-    
+
     if (valorAtual > valorTotal) {
         alert('O valor atual não pode ser maior que o valor total.');
         return;
     }
-    
+
     // Adicionar novo objetivo
     const novoObjetivo = {
         titulo,
         valorTotal,
         valorAtual
     };
-    
+
     dadosFinanceiros.objetivos.push(novoObjetivo);
     objetivoAtualIndex = dadosFinanceiros.objetivos.length - 1;
-    
+
     // Atualizar interface
     atualizarObjetivo();
-    
+
     // Fechar modal e limpar formulário
-    const modal = bootstrap.Modal.getInstance(document.getElementById('modal-cadastro'));
-    modal.hide();
+    fecharModal('modal-cadastro');
     document.getElementById('form-objetivo').reset();
 }
 
-// Verificar e aplicar o modo escuro se estiver ativado
-function verificarModoEscuro() {
-    // Modo escuro sempre ativado
-    window.modoEscuro = true;
-    console.log('Modo escuro definido como padrão');
-    
-    // Aplicar classes para modo escuro
-    document.body.classList.add('modo-escuro');
-    document.documentElement.classList.add('modo-escuro-html');
-    console.log('Classes de modo escuro aplicadas');
+// Função para fechar o modal corretamente
+function fecharModal(modalId) {
+    const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+    if (modal) {
+        modal.hide();
+    }
+
+    // Remover manualmente o backdrop caso ainda exista
+    setTimeout(() => {
+        const backdrops = document.getElementsByClassName('modal-backdrop');
+        while (backdrops.length > 0) {
+            backdrops[0].parentNode.removeChild(backdrops[0]);
+        }
+        document.body.classList.remove('modal-open'); // Remover classe que bloqueia o scroll
+    }, 300); // Pequeno delay para garantir que o modal esteja completamente fechado
 }
 
 // Inicializar o aplicativo quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM carregado, inicializando aplicativo...');
-    // Primeiro verificar o modo escuro para aplicar o tema correto desde o início
-    verificarModoEscuro();
-    // Depois configurar os event listeners (incluindo o do botão de modo escuro)
-    configurarEventListeners();
-    // Inicializar o dashboard e outras funcionalidades
     inicializarDashboard();
     console.log('Aplicativo inicializado com sucesso!');
 });

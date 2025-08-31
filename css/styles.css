@@ -1,15 +1,10 @@
 /* Estilos gerais */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-html.modo-escuro-html,
-body.modo-escuro {
     background-color: #121212;
     color: #e0e0e0;
 }
+
 
 /* Estilos para o menu de usuário */
 /* Todos os estilos do menu de usuário foram removidos */
@@ -23,8 +18,7 @@ body.modo-escuro {
     z-index: 100;
     padding: 48px 0 0;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-    background-color: #f8f9fa;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    background-color: #121212;
 }
 
 body.modo-escuro .sidebar {
@@ -38,7 +32,6 @@ body.modo-escuro .sidebar {
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
     margin: 0.2rem 0;
-    transition: color 0.3s, background-color 0.3s;
 }
 
 body.modo-escuro .sidebar .nav-link {
@@ -176,7 +169,6 @@ body.modo-escuro .table-hover tbody tr:hover {
 
 .transaction-item {
     border-left: 4px solid transparent;
-    transition: background-color 0.2s ease;
 }
 
 .transaction-item:hover {
