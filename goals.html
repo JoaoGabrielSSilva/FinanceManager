@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objetivos - Gestor Financeiro</title>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="modo-escuro">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar / Menu lateral -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h4>Gestor Financeiro</h4>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">
+                            <i class="fas fa-chart-line"></i> Relatórios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="goals.html">
+                            <i class="fas fa-bullseye"></i> Objetivos
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo principal -->
+            <main class="main-content">
+                <div class="header">
+                    <h1>Objetivos Financeiros</h1>
+                </div>
+                
+                <!-- Resumo dos objetivos -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="estatistica">
+                                    <h3>Total de Objetivos</h3>
+                                    <div class="valor" id="total-objetivos">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="estatistica">
+                                    <h3>Objetivos Concluídos</h3>
+                                    <div class="valor" id="objetivos-concluidos">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="estatistica">
+                                    <h3>Valor Total</h3>
+                                    <div class="valor" id="valor-total-objetivos">R$ 0,00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lista de objetivos -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Meus Objetivos</h5>
+                                <button id="adicionar-objetivo" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Novo Objetivo
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="objetivos-container" id="lista-objetivos">
+                                    <!-- Placeholder para quando não há objetivos -->
+                                    <div id="sem-objetivos" class="text-center">
+                                        <p class="texto-muted">Você ainda não tem objetivos cadastrados</p>
+                                        <button class="btn btn-outline-primary" id="criar-primeiro-objetivo">
+                                            <i class="fas fa-plus"></i> Criar meu primeiro objetivo
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Os objetivos serão inseridos aqui via JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar/editar objetivo -->
+    <div class="modal" id="modal-objetivo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulo-modal-objetivo">Novo Objetivo</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-objetivo">
+                        <input type="hidden" id="objetivo-id">
+                        <div class="form-group">
+                            <label for="objetivo-nome" class="form-label">Nome do Objetivo</label>
+                            <input type="text" class="form-control" id="objetivo-nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-valor" class="form-label">Valor Total (R$)</label>
+                            <input type="number" class="form-control" id="objetivo-valor" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-valor-atual" class="form-label">Valor Atual (R$)</label>
+                            <input type="number" class="form-control" id="objetivo-valor-atual" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-data" class="form-label">Data Limite</label>
+                            <input type="date" class="form-control" id="objetivo-data">
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-categoria" class="form-label">Categoria</label>
+                            <select class="form-select" id="objetivo-categoria">
+                                <option value="Viagem">Viagem</option>
+                                <option value="Educação">Educação</option>
+                                <option value="Veículo">Veículo</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Tecnologia">Tecnologia</option>
+                                <option value="Emergência">Fundo de Emergência</option>
+                                <option value="Aposentadoria">Aposentadoria</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-descricao" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="objetivo-descricao" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="salvar-objetivo">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar exclusão -->
+    <div class="modal" id="modal-confirmar-exclusao">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir este objetivo?</p>
+                    <p>Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript personalizado -->
+    <script src="js/app.js"></script>
+    <script src="js/goals.js"></script>
+</body>
+</html>

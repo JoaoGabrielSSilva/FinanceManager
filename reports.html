@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Gestor Financeiro</title>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="modo-escuro">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar / Menu lateral -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h4>Gestor Financeiro</h4>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="reports.html">
+                            <i class="fas fa-chart-line"></i> Relatórios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="goals.html">
+                            <i class="fas fa-bullseye"></i> Objetivos
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo principal -->
+            <main class="main-content">
+                <div class="header">
+                    <h1>Relatórios</h1>
+                </div>
+                
+                <!-- Filtros -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Filtros</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="filtros-container">
+                                    <div class="form-group">
+                                        <label for="periodo" class="form-label">Período</label>
+                                        <select id="periodo" class="form-select">
+                                            <option value="mes-atual">Mês Atual</option>
+                                            <option value="mes-anterior">Mês Anterior</option>
+                                            <option value="ultimos-3-meses">Últimos 3 Meses</option>
+                                            <option value="ultimos-6-meses">Últimos 6 Meses</option>
+                                            <option value="ano-atual">Ano Atual</option>
+                                            <option value="personalizado">Personalizado</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="datas-personalizadas" class="row" style="display: none;">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="data-inicio" class="form-label">Data Início</label>
+                                                <input type="date" id="data-inicio" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="data-fim" class="form-label">Data Fim</label>
+                                                <input type="date" id="data-fim" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="categoria-filtro" class="form-label">Categoria</label>
+                                        <select id="categoria-filtro" class="form-select">
+                                            <option value="">Todas</option>
+                                            <option value="Alimentação">Alimentação</option>
+                                            <option value="Transporte">Transporte</option>
+                                            <option value="Moradia">Moradia</option>
+                                            <option value="Lazer">Lazer</option>
+                                            <option value="Saúde">Saúde</option>
+                                            <option value="Educação">Educação</option>
+                                            <option value="Salário">Salário</option>
+                                            <option value="Investimentos">Investimentos</option>
+                                            <option value="Outros">Outros</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="tipo-filtro" class="form-label">Tipo</label>
+                                        <select id="tipo-filtro" class="form-select">
+                                            <option value="">Todos</option>
+                                            <option value="receita">Receitas</option>
+                                            <option value="despesa">Despesas</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="botoes-filtro">
+                                        <button id="aplicar-filtros" class="btn btn-primary">Aplicar Filtros</button>
+                                        <button id="limpar-filtros" class="btn btn-secondary">Limpar Filtros</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gráficos e Resumo -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Distribuição de Despesas por Categoria</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="grafico-container">
+                                    <canvas id="grafico-categorias"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Resumo</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="resumo-item">
+                                    <span class="label">Total de Receitas:</span>
+                                    <span class="valor positivo" id="resumo-receitas">R$ 0,00</span>
+                                </div>
+                                <div class="resumo-item">
+                                    <span class="label">Total de Despesas:</span>
+                                    <span class="valor negativo" id="resumo-despesas">R$ 0,00</span>
+                                </div>
+                                <div class="resumo-item">
+                                    <span class="label">Saldo:</span>
+                                    <div id="resumo-saldo">R$ 0,00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Evolução Financeira</h5>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-primary active" data-view="mensal">Mensal</button>
+                                    <button class="btn btn-sm btn-outline-primary" data-view="semanal">Semanal</button>
+                                    <button class="btn btn-sm btn-outline-primary" data-view="diario">Diário</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="grafico-container">
+                                    <canvas id="grafico-evolucao"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabela de Transações -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Transações do Período</h5>
+                                <div class="acoes-tabela">
+                                    <div class="busca">
+                                        <input type="text" id="buscar-transacao" placeholder="Buscar..." class="form-control">
+                                    </div>
+                                    <div class="exportar">
+                                        <button id="exportar-pdf" class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-pdf"></i> PDF</button>
+                                        <button id="exportar-excel" class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-excel"></i> Excel</button>
+                                        <button id="exportar-csv" class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-csv"></i> CSV</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="tabela-container">
+                                    <table class="tabela">
+                                        <thead>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Descrição</th>
+                                                <th>Categoria</th>
+                                                <th>Valor</th>
+                                                <th>Tipo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabela-transacoes-relatorio">
+                                            <!-- Placeholder para quando não há transações -->
+                                            <tr id="sem-transacoes-row">
+                                                <td colspan="5" class="text-center">
+                                                    <p class="texto-muted">Não há transações no período selecionado</p>
+                                                </td>
+                                            </tr>
+                                            <!-- As transações serão inseridas aqui via JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript personalizado -->
+    <script src="js/app.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>

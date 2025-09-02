@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor Financeiro</title>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="modo-escuro">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar / Menu lateral -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h4>Gestor Financeiro</h4>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">
+                            <i class="fas fa-chart-line"></i> Relatórios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="goals.html">
+                            <i class="fas fa-bullseye"></i> Objetivos
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo principal -->
+            <main class="main-content">
+                <div class="header">
+                    <h1>Dashboard</h1>
+                </div>
+                
+                <!-- Cards superiores -->
+                <div class="row">
+                    <!-- Card de Saldo -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Saldo Atual</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="saldo-atual" id="saldo-atual">R$ 0,00</div>
+                                <div class="saldo-info">
+                                    <div>
+                                        <span class="label">Receitas:</span>
+                                        <span class="valor positivo" id="total-receitas">R$ 0,00</span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Despesas:</span>
+                                        <span class="valor negativo" id="total-despesas">R$ 0,00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card de Objetivo -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Objetivo Financeiro</h5>
+                                <div class="objetivo-nav">
+                                    <button id="objetivo-anterior" class="btn-nav"><i class="fas fa-chevron-left"></i></button>
+                                    <button id="objetivo-proximo" class="btn-nav"><i class="fas fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="objetivo-info">
+                                    <h6 id="objetivo-titulo">Sem objetivos</h6>
+                                    <div class="objetivo-progresso">
+                                        <div class="grafico-container">
+                                            <canvas id="grafico-meta"></canvas>
+                                        </div>
+                                        <div class="objetivo-valores">
+                                            <div>
+                                                <span class="label">Atual:</span>
+                                                <span class="valor" id="objetivo-atual">R$ 0,00</span>
+                                            </div>
+                                            <div>
+                                                <span class="label">Meta:</span>
+                                                <span class="valor" id="objetivo-meta">R$ 0,00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gráfico de Receitas e Despesas -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Receitas e Despesas por Mês</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="grafico-container">
+                                    <canvas id="grafico-mensal"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabela de Transações -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Transações Recentes</h5>
+                                <div class="filtros">
+                                    <input type="text" id="buscar-transacao" placeholder="Buscar..." class="form-control">
+                                    <select id="filtro-tipo" class="form-select">
+                                        <option value="">Todos os tipos</option>
+                                        <option value="receita">Receitas</option>
+                                        <option value="despesa">Despesas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="tabela-container">
+                                    <table class="tabela">
+                                        <thead>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Descrição</th>
+                                                <th>Categoria</th>
+                                                <th>Valor</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabela-transacoes">
+                                            <!-- Transações serão inseridas aqui via JavaScript -->
+                                            <tr id="sem-transacoes">
+                                                <td colspan="5" class="text-center">Nenhuma transação encontrada</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Botão flutuante para adicionar transação -->
+    <button id="btn-adicionar" class="floating-button">
+        <i class="fas fa-plus"></i>
+    </button>
+    
+    <!-- Menu flutuante -->
+    <div id="menu-flutuante" class="floating-menu hidden">
+        <button id="btn-receita" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Receita
+        </button>
+        <button id="btn-despesa" class="btn btn-danger">
+            <i class="fas fa-minus-circle"></i> Despesa
+        </button>
+        <button id="btn-objetivo" class="btn btn-primary">
+            <i class="fas fa-bullseye"></i> Objetivo
+        </button>
+    </div>
+    
+    <!-- Modal para adicionar transação -->
+    <div class="modal" id="modalTransacao">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-titulo">Adicionar Transação</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulário para transações -->
+                    <form id="form-transacao">
+                        <div class="form-group">
+                            <label for="descricao" class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="descricao" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="valor" class="form-label">Valor (R$)</label>
+                            <input type="number" class="form-control" id="valor" step="0.01" min="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo" class="form-label">Tipo</label>
+                            <select class="form-select" id="tipo" required>
+                                <option value="receita">Receita</option>
+                                <option value="despesa">Despesa</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria" class="form-label">Categoria</label>
+                            <select class="form-select" id="categoria" required>
+                                <option value="Alimentação">Alimentação</option>
+                                <option value="Transporte">Transporte</option>
+                                <option value="Moradia">Moradia</option>
+                                <option value="Lazer">Lazer</option>
+                                <option value="Saúde">Saúde</option>
+                                <option value="Educação">Educação</option>
+                                <option value="Salário">Salário</option>
+                                <option value="Investimentos">Investimentos</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="data" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="data" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Salvar</button>
+                    </form>
+
+                    <!-- Formulário para objetivos financeiros -->
+                    <form id="form-objetivo" class="hidden">
+                        <div class="form-group">
+                            <label for="objetivo-titulo-input" class="form-label">Título do Objetivo</label>
+                            <input type="text" class="form-control" id="objetivo-titulo-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-valor" class="form-label">Valor Total (R$)</label>
+                            <input type="number" class="form-control" id="objetivo-valor" step="0.01" min="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-valor-atual" class="form-label">Valor Atual (R$)</label>
+                            <input type="number" class="form-control" id="objetivo-valor-atual" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="objetivo-data" class="form-label">Data Limite</label>
+                            <input type="date" class="form-control" id="objetivo-data">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Salvar Objetivo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript personalizado -->
+    <script src="js/app.js"></script>
+</body>
+</html>
