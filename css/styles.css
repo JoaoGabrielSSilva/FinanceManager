@@ -43,6 +43,7 @@ body {
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
+    margin-bottom: 20px;
 }
 
 /* Colunas responsivas */
@@ -135,6 +136,7 @@ body {
 
 /* Conteúdo principal */
 .main-content {
+    width: 100%;
     margin-left: 250px;
     padding: 20px;
     min-height: 100vh;
@@ -198,32 +200,76 @@ body {
 /* Saldo */
 .saldo-card {
     text-align: center;
+
+    h3 {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+    }
+
+    .valor {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .saldo-atual{
+        font-size: 3rem;
+        margin-top: auto;
+    }
+
+    .saldo-info{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        font-size: 2rem;
+
+        margin-top: auto;
+
+        div{
+            display: flex;
+            flex-direction: column;
+            padding: 0 1rem;
+        }
+        
+        div:first-of-type{
+            border: 1px solid var(--success-color);
+            border-radius: .5rem;
+        }
+
+        div:nth-of-type(2){
+            border: 1px solid var(--danger-color);
+            border-radius: .5rem;
+        }
+
+        .positivo{
+            color: var(--success-color);
+        }
+
+        .negativo{
+            color: var(--danger-color);
+        }
+    }
 }
 
-.saldo-card h3 {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-}
-
-.saldo-card .valor {
-    font-size: 2rem;
-    font-weight: 700;
-}
-
-.positivo {
-    color: var(--success-color);
-}
-
-.negativo {
-    color: var(--danger-color);
-}
 
 /* Gráficos */
 .grafico-container {
     position: relative;
     height: 300px;
     width: 100%;
+}
+
+/* Cards com altura igual */
+.card-equal-height {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-equal-height .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Objetivos */
@@ -233,6 +279,77 @@ body {
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Reorganização do card de objetivo */
+.objetivo-titulo-centralizado {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.objetivo-info-reorganizado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.grafico-donut-container {
+    position: relative;
+    width: 100%;
+    max-width: 90%;
+    height: 200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .btn-nav{
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+.objetivo-nav-lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.objetivo-progresso-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.barra-progresso {
+    height: 8px;
+    background-color: var(--input-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.barra-progresso-fill {
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.objetivo-valores {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-top: 1px solid var(--border-color);
 }
 
 .objetivo-header {
@@ -339,28 +456,31 @@ body {
 }
 
 /* Botão flutuante */
-.botao-flutuante {
+.botao-flutuante,
+.floating-button {
     position: fixed;
     bottom: 30px;
     right: 30px;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: var(--accent-color);
+    background-color: var(--accent-hover);
     color: white;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     font-size: 24px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    border: none;
     transition: all 0.3s ease;
     z-index: 1000;
 }
 
-.botao-flutuante:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-5px);
+.botao-flutuante:hover,
+.floating-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Formulários */
@@ -644,6 +764,30 @@ body {
     font-weight: 600;
 }
 
+/* Menu Flutuante */
+.floating-menu {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1001; /* Maior que o z-index do botão flutuante */
+    transition: all 0.3s ease;
+}
+
+.floating-menu.hidden {
+    display: none;
+}
+
+.floating-menu .btn {
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
 /* Utilitários */
 .text-center {
     text-align: center;
@@ -651,6 +795,10 @@ body {
 
 .texto-muted {
     color: var(--text-secondary);
+}
+
+.hidden {
+    display: none;
 }
 
 /* Acões da tabela */

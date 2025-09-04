@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor Financeiro</title>
+    <title>Finance Manager</title>
     <!-- CSS personalizado -->
     <link rel="stylesheet" href="css/styles.css">
     <!-- Font Awesome para ícones -->
@@ -15,7 +15,7 @@
             <!-- Sidebar / Menu lateral -->
             <div class="sidebar">
                 <div class="sidebar-header">
-                    <h4>Gestor Financeiro</h4>
+                    <h4>Finance Manager</h4>
                 </div>
                 <ul class="nav">
                     <li class="nav-item">
@@ -37,16 +37,16 @@
             </div>
 
             <!-- Conteúdo principal -->
-            <main class="main-content">
+            <main class="main-content align-items-center">
                 <div class="header">
                     <h1>Dashboard</h1>
                 </div>
                 
                 <!-- Cards superiores -->
-                <div class="row">
+                <div class="row justify-content-around">
                     <!-- Card de Saldo -->
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card card-equal-height saldo-card">
                             <div class="card-header">
                                 <h5>Saldo Atual</h5>
                             </div>
@@ -68,20 +68,21 @@
                     
                     <!-- Card de Objetivo -->
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card card-equal-height">
                             <div class="card-header">
                                 <h5>Objetivo Financeiro</h5>
-                                <div class="objetivo-nav">
-                                    <button id="objetivo-anterior" class="btn-nav"><i class="fas fa-chevron-left"></i></button>
-                                    <button id="objetivo-proximo" class="btn-nav"><i class="fas fa-chevron-right"></i></button>
-                                </div>
                             </div>
                             <div class="card-body">
-                                <div class="objetivo-info">
-                                    <h6 id="objetivo-titulo">Sem objetivos</h6>
-                                    <div class="objetivo-progresso">
-                                        <div class="grafico-container">
-                                            <canvas id="grafico-meta"></canvas>
+                                <h6 id="objetivo-titulo" class="objetivo-titulo-centralizado">Sem objetivos</h6>
+                                <div class="objetivo-info-reorganizado">
+                                    <div class="grafico-donut-container">
+                                        <button id="objetivo-anterior" class="btn-nav"><i class="fas fa-chevron-left"></i></button>
+                                        <canvas id="grafico-meta"></canvas>    
+                                        <button id="objetivo-proximo" class="btn-nav"><i class="fas fa-chevron-right"></i></button>
+                                    </div>
+                                    <div class="objetivo-progresso-container">
+                                        <div class="barra-progresso">
+                                            <div class="barra-progresso-fill" id="objetivo-progresso-fill" style="width: 0%"></div>
                                         </div>
                                         <div class="objetivo-valores">
                                             <div>
@@ -252,6 +253,7 @@
     <!-- Chart.js para os gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- JavaScript personalizado -->
+    <script src="js/custom.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
